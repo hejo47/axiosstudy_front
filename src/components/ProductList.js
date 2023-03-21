@@ -1,15 +1,31 @@
-import React from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
-const ProductList = (props) => {
+const url = "http://localhost:8080/products";
+
+const ProductList = () => {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    axios
+      .get(url)
+      .then((result) => {
+        const products = result.data.products;
+        setProducts(products);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
   return (
     <div>
-      {props.list.map((item, idx) => {
+      {products.map((product, idx) => {
         return (
           <div key={idx}>
-            <img src={item.imgSrc} alt={item.name} />
-            <p>{item.name}</p>
-            <p>{item.price}</p>
+            <img src={product.imgSrc} alt={product.name} />
+            <p>{product.name}</p>
+            <p>{product.price}</p>
           </div>
+          // <p>경호사랑</p>
         );
       })}
     </div>
